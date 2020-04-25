@@ -6,6 +6,7 @@ defmodule Simp.Users.User do
 
   schema "users" do
     pow_user_fields()
+    has_many :transactions, Simp.Transactions.Transaction
 
     timestamps()
   end
