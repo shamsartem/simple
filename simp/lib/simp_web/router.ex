@@ -1,5 +1,6 @@
 defmodule SimpWeb.Router do
   use SimpWeb, :router
+  use Pow.Phoenix.Router
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -14,8 +15,19 @@ defmodule SimpWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/", SimpWeb do
+  pipeline :protected do
+    plug Pow.Plug.RequireAuthenticated,
+      error_handler: Pow.Phoenix.PlugErrorHandler
+  end
+
+  scope "/" do
     pipe_through :browser
+
+    pow_routes()
+  end
+
+  scope "/", SimpWeb do
+    pipe_through [:browser, :protected]
 
     live "/", PageLive, :index
   end
@@ -36,7 +48,7 @@ defmodule SimpWeb.Router do
     import Phoenix.LiveDashboard.Router
 
     scope "/" do
-      pipe_through :browser
+      pipe_through [:browser, :protected]
       live_dashboard "/dashboard", metrics: SimpWeb.Telemetry
     end
   end

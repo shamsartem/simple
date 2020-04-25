@@ -14,7 +14,8 @@ defmodule Simp.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: Simp.PubSub},
       # Start the Endpoint (http/https)
-      SimpWeb.Endpoint
+      SimpWeb.Endpoint,
+      Pow.Store.Backend.MnesiaCache
       # Start a worker by calling: Simp.Worker.start_link(arg)
       # {Simp.Worker, arg}
     ]
