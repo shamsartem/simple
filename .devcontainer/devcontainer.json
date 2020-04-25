@@ -15,14 +15,15 @@
     "mikestead.dotenv"
   ],
   "settings": {
-    "elixir.projectPath": "./mix-project-folder",
-    "elixirLS.projectDir": "./mix-project-folder",
+    "elixir.projectPath": "./simp",
+    "elixirLS.projectDir": "./simp",
     "editor.formatOnSave": true,
     "emmet.syntaxProfiles": {
       "HTML (EEx)": "html"
     },
     "emmet.includeLanguages": {
       "HTML (EEx)": "html"
-    }
+    },
+    "vscode-eex-beautify.keepBlankLines": 1
   }
 }
