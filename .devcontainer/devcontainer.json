@@ -1,0 +1,28 @@
+{
+  "name": "Docker Phoenix",
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/app",
+  "appPort": 4000,
+  "shutdownAction": "stopCompose",
+  "extensions": [
+    "mjmcloug.vscode-elixir",
+    "jakebecker.elixir-ls",
+    "florinpatrascu.vscode-elixir-snippets",
+    "zerokol.vscode-eex-beautify",
+    "ckolkman.vscode-postgres",
+    "editorconfig.editorconfig",
+    "mikestead.dotenv"
+  ],
+  "settings": {
+    "elixir.projectPath": "./mix-project-folder",
+    "elixirLS.projectDir": "./mix-project-folder",
+    "editor.formatOnSave": true,
+    "emmet.syntaxProfiles": {
+      "HTML (EEx)": "html"
+    },
+    "emmet.includeLanguages": {
+      "HTML (EEx)": "html"
+    }
+  }
+}
