@@ -42,6 +42,15 @@ defmodule Simp.Transactions do
   """
   def get_transaction!(id), do: Repo.get!(Transaction, id)
 
+  def get_previous_transaction(%User{} = current_user) do
+    Repo.all(
+      from t in Transaction,
+        where: t.user_id == ^current_user.id,
+        order_by: [desc: t.updated_at],
+        limit: 1
+    )
+  end
+
   @doc """
   Creates a transaction.
 

@@ -8,8 +8,21 @@ defmodule SimpWeb.TransactionLive.Index do
   @impl true
   def mount(_params, %{"simp_auth" => token}, socket) do
     current_user = SimpWeb.Live.AuthHelper.get_credentials(socket, token)
-    socket = assign(socket, :current_user, current_user)
-    {:ok, assign(socket, :transactions, fetch_transactions(current_user))}
+    transactions = Transactions.list_transactions(current_user)
+    [previous_transaction | _] = Transactions.get_previous_transaction(current_user)
+
+    socket =
+      socket
+      |> assign(:current_user, current_user)
+      |> assign(:transactions, transactions)
+      |> assign(:previous_transaction, %Transaction{
+        date: previous_transaction.date,
+        category: previous_transaction.category,
+        currency: previous_transaction.currency,
+        amount: 1
+      })
+
+    {:ok, socket}
   end
 
   @impl true
@@ -23,10 +36,14 @@ defmodule SimpWeb.TransactionLive.Index do
     |> assign(:transaction, Transactions.get_transaction!(id))
   end
 
-  defp apply_action(socket, :new, _params) do
+  defp apply_action(
+         %{assigns: %{previous_transaction: previous_transaction}} = socket,
+         :new,
+         _params
+       ) do
     socket
     |> assign(:page_title, "New Transaction")
-    |> assign(:transaction, %Transaction{})
+    |> assign(:transaction, previous_transaction)
   end
 
   defp apply_action(socket, :index, _params) do
@@ -41,13 +58,11 @@ defmodule SimpWeb.TransactionLive.Index do
 
     if socket.assigns.current_user.id == transaction.user_id do
       {:ok, _} = Transactions.delete_transaction(transaction)
-      {:noreply, assign(socket, :transactions, fetch_transactions(socket.assigns.current_user))}
+
+      {:noreply,
+       assign(socket, :transactions, Transactions.list_transactions(socket.assigns.current_user))}
     else
       {:noreply, socket}
     end
-  end
-
-  defp fetch_transactions(%User{} = current_user) do
-    Transactions.list_transactions(current_user)
   end
 end
