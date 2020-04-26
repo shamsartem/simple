@@ -7,6 +7,7 @@ defmodule Simp.Transactions do
   alias Simp.Repo
 
   alias Simp.Transactions.Transaction
+  alias Simp.Users.User
 
   @doc """
   Returns the list of transactions.
@@ -19,6 +20,10 @@ defmodule Simp.Transactions do
   """
   def list_transactions do
     Repo.all(Transaction)
+  end
+
+  def list_transactions(%User{} = current_user) do
+    Repo.all(from t in Transaction, where: t.user_id == ^current_user.id)
   end
 
   @doc """
@@ -49,8 +54,9 @@ defmodule Simp.Transactions do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_transaction(attrs \\ %{}) do
-    %Transaction{}
+  def create_transaction(attrs \\ %{}, %User{} = user) do
+    user
+    |> Ecto.build_assoc(:transactions)
     |> Transaction.changeset(attrs)
     |> Repo.insert()
   end

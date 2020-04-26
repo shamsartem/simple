@@ -11,7 +11,7 @@ defmodule Simp.Repo.Migrations.CreateTransactions do
       add :price, :decimal, null: false
       add :amount, :decimal, null: false
       add :currency, :string, null: false
-      add :user_id, references(:users, on_delete: :delete_all)
+      add :user_id, references(:users, on_delete: :delete_all), null: false
 
       timestamps()
     end

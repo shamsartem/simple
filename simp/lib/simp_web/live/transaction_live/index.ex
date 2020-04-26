@@ -3,10 +3,13 @@ defmodule SimpWeb.TransactionLive.Index do
 
   alias Simp.Transactions
   alias Simp.Transactions.Transaction
+  alias Simp.Users.User
 
   @impl true
-  def mount(_params, _session, socket) do
-    {:ok, assign(socket, :transactions, fetch_transactions())}
+  def mount(_params, %{"simp_auth" => token}, socket) do
+    current_user = SimpWeb.Live.AuthHelper.get_credentials(socket, token)
+    socket = assign(socket, :current_user, current_user)
+    {:ok, assign(socket, :transactions, fetch_transactions(current_user))}
   end
 
   @impl true
@@ -35,12 +38,16 @@ defmodule SimpWeb.TransactionLive.Index do
   @impl true
   def handle_event("delete", %{"id" => id}, socket) do
     transaction = Transactions.get_transaction!(id)
-    {:ok, _} = Transactions.delete_transaction(transaction)
 
-    {:noreply, assign(socket, :transactions, fetch_transactions())}
+    if socket.assigns.current_user.id == transaction.user_id do
+      {:ok, _} = Transactions.delete_transaction(transaction)
+      {:noreply, assign(socket, :transactions, fetch_transactions(socket.assigns.current_user))}
+    else
+      {:noreply, socket}
+    end
   end
 
-  defp fetch_transactions do
-    Transactions.list_transactions()
+  defp fetch_transactions(%User{} = current_user) do
+    Transactions.list_transactions(current_user)
   end
 end
