@@ -21,6 +21,7 @@
               <li>Signed in as: <%= @current_user.email %></li>
               <li><%= link "Sign out", to: Routes.pow_session_path(@conn, :delete), method: :delete %></li>
               <li><%= link "Edit account", to: Routes.pow_registration_path(@conn, :edit) %></li>
+              <li><%= link "Import csv", to: Routes.import_csv_path(@conn, :new) %></li>
             <% end %>
           </ul>
         </nav>

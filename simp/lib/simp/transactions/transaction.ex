@@ -38,5 +38,7 @@ defmodule Simp.Transactions.Transaction do
       :amount,
       :currency
     ])
+    |> check_constraint(:price, name: :price_must_be_positive)
+    |> check_constraint(:amount, name: :amount_must_be_positive)
   end
 end

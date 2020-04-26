@@ -3,26 +3,47 @@ defmodule SimpWeb.TransactionLive.Index do
 
   alias Simp.Transactions
   alias Simp.Transactions.Transaction
-  alias Simp.Users.User
 
   @impl true
   def mount(_params, %{"simp_auth" => token}, socket) do
     current_user = SimpWeb.Live.AuthHelper.get_credentials(socket, token)
-    transactions = Transactions.list_transactions(current_user)
-    [previous_transaction | _] = Transactions.get_previous_transaction(current_user)
+    socket = assign(socket, current_user: current_user)
 
-    socket =
-      socket
-      |> assign(:current_user, current_user)
-      |> assign(:transactions, transactions)
-      |> assign(:previous_transaction, %Transaction{
+    {:ok, set_transactions(socket)}
+  end
+
+  defp fetch(socket) do
+    %{page: page} = socket.assigns
+    transactions = Transactions.list_transactions(socket.assigns.current_user, page)
+    assign(socket, transactions_to_show: transactions)
+  end
+
+  defp set_transactions(socket) do
+    transactions = Transactions.list_transactions(socket.assigns.current_user)
+
+    previous_transaction =
+      case Transactions.get_previous_transaction(socket.assigns.current_user) do
+        [previous_transaction | _] -> previous_transaction
+        _ -> %Transaction{date: Date.utc_today()}
+      end
+
+    socket
+    |> assign(
+      transactions: transactions,
+      previous_transaction: %Transaction{
         date: previous_transaction.date,
         category: previous_transaction.category,
         currency: previous_transaction.currency,
         amount: 1
-      })
+      },
+      page: 1
+    )
+    |> fetch()
+  end
 
-    {:ok, socket}
+  def handle_params(%{"page" => page}, _url, socket) do
+    {page, ""} = Integer.parse(page || "1")
+    {:noreply, socket |> assign(page: page) |> fetch()}
   end
 
   @impl true
@@ -59,8 +80,7 @@ defmodule SimpWeb.TransactionLive.Index do
     if socket.assigns.current_user.id == transaction.user_id do
       {:ok, _} = Transactions.delete_transaction(transaction)
 
-      {:noreply,
-       assign(socket, :transactions, Transactions.list_transactions(socket.assigns.current_user))}
+      {:noreply, set_transactions(socket)}
     else
       {:noreply, socket}
     end

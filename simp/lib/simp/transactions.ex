@@ -23,7 +23,21 @@ defmodule Simp.Transactions do
   end
 
   def list_transactions(%User{} = current_user) do
-    Repo.all(from t in Transaction, where: t.user_id == ^current_user.id)
+    Repo.all(
+      from t in Transaction, where: t.user_id == ^current_user.id, order_by: [desc: t.date]
+    )
+  end
+
+  def list_transactions(%User{} = current_user, current_page) do
+    per_page = 10
+
+    Repo.all(
+      from t in Transaction,
+        where: t.user_id == ^current_user.id,
+        offset: ^((current_page - 1) * per_page),
+        order_by: [desc: t.date],
+        limit: ^per_page
+    )
   end
 
   @doc """
@@ -68,6 +82,16 @@ defmodule Simp.Transactions do
     |> Ecto.build_assoc(:transactions)
     |> Transaction.changeset(attrs)
     |> Repo.insert()
+  end
+
+  def create_transactions(attrs \\ %{}, %User{} = user) do
+    attrs
+    |> Enum.map(fn attr ->
+      user
+      |> Ecto.build_assoc(:transactions)
+      |> Transaction.changeset(attr)
+    end)
+    |> Enum.map(fn changeset -> Repo.insert(changeset) end)
   end
 
   @doc """

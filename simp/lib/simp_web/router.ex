@@ -34,6 +34,9 @@ defmodule SimpWeb.Router do
     live "/transactions", TransactionLive.Index, :index
     live "/transactions/new", TransactionLive.Index, :new
     live "/transactions/:id/edit", TransactionLive.Index, :edit
+
+    get "/import-csv", ImportCSVController, :new
+    post "/import-csv/create", ImportCSVController, :create
   end
 
   # Other scopes may use custom stacks.

@@ -1,4 +1,4 @@
-<h1>Listing Transactions</h1>
+<h1>Listing Transactions, page <%= @page %></h1>
 
 <%= if @live_action in [:new, :edit] do %>
   <%= live_modal @socket, SimpWeb.TransactionLive.FormComponent,
@@ -26,7 +26,7 @@
     </tr>
   </thead>
   <tbody id="transactions">
-    <%= for transaction <- @transactions do %>
+    <%= for transaction <- @transactions_to_show do %>
       <tr id="transaction-<%= transaction.id %>">
         <td><%= transaction.is_expense %></td>
         <td><%= transaction.date %></td>
@@ -45,5 +45,14 @@
     <% end %>
   </tbody>
 </table>
+
+<%= if @page > 1 do %>
+  <span><%= live_patch "prev", to: Routes.transaction_index_path(@socket, :index, page: @page - 1) %></span>
+<% end %>
+<%= for i <- (@page - 5)..(@page + 5), i > 0 do %>
+  <span><%= live_patch "#{i}", to: Routes.transaction_index_path(@socket, :index, page: i) %></span>
+<% end %>
+<span><%= live_patch "next", to: Routes.transaction_index_path(@socket, :index, page: @page + 1) %></span>
+<br>
 
 <span><%= live_patch "New Transaction", to: Routes.transaction_index_path(@socket, :new) %></span>
