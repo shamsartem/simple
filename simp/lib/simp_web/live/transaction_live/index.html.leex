@@ -6,6 +6,10 @@
     title: @page_title,
     action: @live_action,
     transaction: @transaction,
+    categories: @categories,
+    names: @names,
+    currencies: @currencies,
+    descriptions: @descriptions,
     current_user: @current_user,
     return_to: Routes.transaction_index_path(@socket, :index) %>
 <% end %>

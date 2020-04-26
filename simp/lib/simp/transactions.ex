@@ -40,6 +40,46 @@ defmodule Simp.Transactions do
     )
   end
 
+  def list_categories(%User{} = current_user) do
+    Repo.all(
+      from t in Transaction,
+        select: t.category,
+        group_by: t.category,
+        where: t.user_id == ^current_user.id,
+        order_by: [desc: count(t.category)]
+    )
+  end
+
+  def list_names(%User{} = current_user) do
+    Repo.all(
+      from t in Transaction,
+        select: t.name,
+        group_by: t.name,
+        where: t.user_id == ^current_user.id,
+        order_by: [desc: count(t.name)]
+    )
+  end
+
+  def list_currencies(%User{} = current_user) do
+    Repo.all(
+      from t in Transaction,
+        select: t.currency,
+        group_by: t.currency,
+        where: t.user_id == ^current_user.id,
+        order_by: [desc: count(t.currency)]
+    )
+  end
+
+  def list_descriptions(%User{} = current_user) do
+    Repo.all(
+      from t in Transaction,
+        select: t.description,
+        group_by: t.description,
+        where: t.user_id == ^current_user.id,
+        order_by: [desc: count(t.description)]
+    )
+  end
+
   @doc """
   Gets a single transaction.
 

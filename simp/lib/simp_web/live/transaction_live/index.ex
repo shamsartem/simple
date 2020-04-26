@@ -19,8 +19,6 @@ defmodule SimpWeb.TransactionLive.Index do
   end
 
   defp set_transactions(socket) do
-    transactions = Transactions.list_transactions(socket.assigns.current_user)
-
     previous_transaction =
       case Transactions.get_previous_transaction(socket.assigns.current_user) do
         [previous_transaction | _] -> previous_transaction
@@ -29,7 +27,11 @@ defmodule SimpWeb.TransactionLive.Index do
 
     socket
     |> assign(
-      transactions: transactions,
+      transactions: Transactions.list_transactions(socket.assigns.current_user),
+      categories: Transactions.list_categories(socket.assigns.current_user),
+      currencies: Transactions.list_currencies(socket.assigns.current_user),
+      names: Transactions.list_names(socket.assigns.current_user),
+      descriptions: Transactions.list_descriptions(socket.assigns.current_user),
       previous_transaction: %Transaction{
         date: previous_transaction.date,
         category: previous_transaction.category,
