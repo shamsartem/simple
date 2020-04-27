@@ -1,6 +1,12 @@
 /* This file is for your main application css. */
-@import "./phoenix.css";
+@import "./normalize.css";
+@import "./reset.css";
+@import "./variables.css";
+@import "./global.css";
+
 @import "../node_modules/nprogress/nprogress.css";
+
+@import "./components/components.css";
 
 /* LiveView specific classes for your customizations */
 .invalid-feedback {

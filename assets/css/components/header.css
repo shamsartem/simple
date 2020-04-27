@@ -1,0 +1,15 @@
+.header__nav {
+  display: flex;
+  justify-content: center;
+  top: 0;
+  background-color: var(--c-white);
+  z-index: 1;
+}
+
+.header__container {
+  display: flex;
+  width: 100%;
+  max-width: var(--max-page-width);
+  justify-content: space-between;
+  padding: var(--space-md);
+}

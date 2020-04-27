@@ -29,11 +29,9 @@ defmodule SimpWeb.Router do
   scope "/", SimpWeb do
     pipe_through [:browser, :protected]
 
-    live "/", PageLive, :index
-
-    live "/transactions", TransactionLive.Index, :index
-    live "/transactions/new", TransactionLive.Index, :new
-    live "/transactions/:id/edit", TransactionLive.Index, :edit
+    live "/", TransactionLive.Index, :index
+    live "/new", TransactionLive.Index, :new
+    live "/:id/edit", TransactionLive.Index, :edit
 
     get "/import-csv", ImportCSVController, :new
     post "/import-csv/create", ImportCSVController, :create

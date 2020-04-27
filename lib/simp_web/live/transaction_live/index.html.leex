@@ -1,5 +1,3 @@
-<h1>Listing Transactions, page <%= @page %></h1>
-
 <%= if @live_action in [:new, :edit] do %>
   <%= live_modal @socket, SimpWeb.TransactionLive.FormComponent,
     id: @transaction.id || :new,
@@ -14,49 +12,38 @@
     return_to: Routes.transaction_index_path(@socket, :index) %>
 <% end %>
 
-<table>
-  <thead>
-    <tr>
-      <th>Is expense</th>
-      <th>Date</th>
-      <th>Category</th>
-      <th>Name</th>
-      <th>Description</th>
-      <th>Price</th>
-      <th>Amount</th>
-      <th>Currency</th>
+<ul class="transactions__list">
+  <%= for transaction <- @transactions_to_show do %>
+    <li class="transactions__item">
+      <div class="transactions__itemSection">
+        <div>
+          <%= transaction.date %>
+        </div>
+        <div>
+          <%= transaction.category %>
+        </div>
+      </div>
+      <div class="transactions__itemSection">
+        <div>
+          <%= transaction.name %>
+        </div>
+        <div>
+          <%= "#{Decimal.mult(transaction.price, transaction.amount)} #{transaction.currency}" %>
+        </div>
+      </div>
+      <%= live_patch "", to: Routes.transaction_index_path(@socket, :edit, transaction), class: "transactions__itemLink" %>
+    </li>
+  <% end %>
+</ul>
+<footer class="footer">
+  <div class="footer__container">
+    <span>
+      <%= if @page > 1 do %>
+        <%= live_patch "prev", to: Routes.transaction_index_path(@socket, :index, page: @page - 1) %>
+      <% end %>
+    </span>
+    <span><%= live_patch "next", to: Routes.transaction_index_path(@socket, :index, page: @page + 1) %></span>
+  </div>
+</footer>
 
-      <th></th>
-    </tr>
-  </thead>
-  <tbody id="transactions">
-    <%= for transaction <- @transactions_to_show do %>
-      <tr id="transaction-<%= transaction.id %>">
-        <td><%= transaction.is_expense %></td>
-        <td><%= transaction.date %></td>
-        <td><%= transaction.category %></td>
-        <td><%= transaction.name %></td>
-        <td><%= transaction.description %></td>
-        <td><%= transaction.price %></td>
-        <td><%= transaction.amount %></td>
-        <td><%= transaction.currency %></td>
-
-        <td>
-          <span><%= live_patch "Edit", to: Routes.transaction_index_path(@socket, :edit, transaction) %></span>
-          <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: transaction.id, data: [confirm: "Are you sure?"] %></span>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<%= if @page > 1 do %>
-  <span><%= live_patch "prev", to: Routes.transaction_index_path(@socket, :index, page: @page - 1) %></span>
-<% end %>
-<%= for i <- (@page - 5)..(@page + 5), i > 0 do %>
-  <span><%= live_patch "#{i}", to: Routes.transaction_index_path(@socket, :index, page: i) %></span>
-<% end %>
-<span><%= live_patch "next", to: Routes.transaction_index_path(@socket, :index, page: @page + 1) %></span>
-<br>
-
-<span><%= live_patch "New Transaction", to: Routes.transaction_index_path(@socket, :new) %></span>
+<%= live_patch "+", to: Routes.transaction_index_path(@socket, :new), class: "transactions__add" %>

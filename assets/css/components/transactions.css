@@ -1,0 +1,50 @@
+.transactions__list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.transactions__item {
+  max-width: var(--max-page-width);
+  width: 100%;
+  height: 70px;
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-md);
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+
+.transactions__itemSection {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.transactions__itemLink {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+.transactions__add {
+  width: 64px;
+  height: 64px;
+  position: fixed;
+  border-radius: 9999px;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-color: var(--c-white);
+  background-size: 20px 20px;
+  box-shadow: 2px 2px 8px 4px rgba(0, 0, 0, 0.31);
+  bottom: 30px;
+  right: 30px;
+  z-index: 1;
+  text-align: center;
+  font-size: 30px;
+  font-weight: bold;
+  padding: 6px 0;
+}
