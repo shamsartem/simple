@@ -49,7 +49,8 @@ defmodule Simp.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:pow, "~> 1.0.20"},
       {:argon2_elixir, "~> 2.0"},
-      {:csv, "~> 2.3"}
+      {:csv, "~> 2.3"},
+      {:distillery, "~> 2.1"}
     ]
   end
 

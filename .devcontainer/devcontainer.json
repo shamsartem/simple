@@ -6,7 +6,6 @@
   "appPort": 4000,
   "shutdownAction": "stopCompose",
   "extensions": [
-    "mjmcloug.vscode-elixir",
     "jakebecker.elixir-ls",
     "florinpatrascu.vscode-elixir-snippets",
     "zerokol.vscode-eex-beautify",
@@ -15,8 +14,8 @@
     "mikestead.dotenv"
   ],
   "settings": {
-    "elixir.projectPath": "./simp",
-    "elixirLS.projectDir": "./simp",
+    "elixir.projectPath": ".",
+    "elixirLS.projectDir": ".",
     "editor.formatOnSave": true,
     "emmet.syntaxProfiles": {
       "HTML (EEx)": "html"
