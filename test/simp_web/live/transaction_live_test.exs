@@ -5,9 +5,36 @@ defmodule SimpWeb.TransactionLiveTest do
 
   alias Simp.Transactions
 
-  @create_attrs %{amount: "120.5", category: "some category", currency: "some currency", date: ~D[2010-04-17], description: "some description", is_expense: true, name: "some name", price: "120.5"}
-  @update_attrs %{amount: "456.7", category: "some updated category", currency: "some updated currency", date: ~D[2011-05-18], description: "some updated description", is_expense: false, name: "some updated name", price: "456.7"}
-  @invalid_attrs %{amount: nil, category: nil, currency: nil, date: nil, description: nil, is_expense: nil, name: nil, price: nil}
+  @create_attrs %{
+    amount: "120.5",
+    category: "some category",
+    currency: "some currency",
+    date: ~D[2010-04-17],
+    description: "some description",
+    is_expense: true,
+    name: "some name",
+    price: "120.5"
+  }
+  @update_attrs %{
+    amount: "456.7",
+    category: "some updated category",
+    currency: "some updated currency",
+    date: ~D[2011-05-18],
+    description: "some updated description",
+    is_expense: false,
+    name: "some updated name",
+    price: "456.7"
+  }
+  @invalid_attrs %{
+    amount: nil,
+    category: nil,
+    currency: nil,
+    date: nil,
+    description: nil,
+    is_expense: nil,
+    name: nil,
+    price: nil
+  }
 
   defp fixture(:transaction) do
     {:ok, transaction} = Transactions.create_transaction(@create_attrs)
@@ -33,7 +60,7 @@ defmodule SimpWeb.TransactionLiveTest do
       {:ok, index_live, _html} = live(conn, Routes.transaction_index_path(conn, :index))
 
       assert index_live |> element("a", "New Transaction") |> render_click() =~
-        "New Transaction"
+               "New Transaction"
 
       assert_patch(index_live, Routes.transaction_index_path(conn, :new))
 
@@ -55,7 +82,7 @@ defmodule SimpWeb.TransactionLiveTest do
       {:ok, index_live, _html} = live(conn, Routes.transaction_index_path(conn, :index))
 
       assert index_live |> element("#transaction-#{transaction.id} a", "Edit") |> render_click() =~
-        "Edit Transaction"
+               "Edit Transaction"
 
       assert_patch(index_live, Routes.transaction_index_path(conn, :edit, transaction))
 
@@ -95,7 +122,7 @@ defmodule SimpWeb.TransactionLiveTest do
       {:ok, show_live, _html} = live(conn, Routes.transaction_show_path(conn, :show, transaction))
 
       assert show_live |> element("a", "Edit") |> render_click() =~
-        "Edit Transaction"
+               "Edit Transaction"
 
       assert_patch(show_live, Routes.transaction_show_path(conn, :edit, transaction))
 

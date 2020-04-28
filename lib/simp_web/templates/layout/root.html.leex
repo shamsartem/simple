@@ -18,7 +18,7 @@
             <%# <%= link "LiveDashboard", to: Routes.live_dashboard_path(@conn, :home) %>
           <% end %>
           <%= link "Edit account", to: Routes.pow_registration_path(@conn, :edit) %>
-          <%= link "Import csv", to: Routes.import_csv_path(@conn, :new) %>
+          <%= link "CSV", to: Routes.import_csv_path(@conn, :new) %>
           <%= link "Sign out", to: Routes.pow_session_path(@conn, :delete), method: :delete %>
         </div>
       </nav>

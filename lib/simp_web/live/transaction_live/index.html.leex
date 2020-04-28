@@ -1,20 +1,15 @@
 <%= if @live_action in [:new, :edit] do %>
   <%= live_modal @socket, SimpWeb.TransactionLive.FormComponent,
     id: @transaction.id || :new,
-    title: @page_title,
     action: @live_action,
     transaction: @transaction,
-    categories: @categories,
-    names: @names,
-    currencies: @currencies,
-    descriptions: @descriptions,
     current_user: @current_user,
     return_to: Routes.transaction_index_path(@socket, :index) %>
 <% end %>
 
 <ul class="transactions__list">
   <%= for transaction <- @transactions_to_show do %>
-    <li class="transactions__item">
+    <li class="transactions__item" style="<%= if transaction.is_expense do "" else "background-color: whitesmoke" end %>">
       <div class="transactions__itemSection">
         <div>
           <%= transaction.date %>
@@ -28,7 +23,7 @@
           <%= transaction.name %>
         </div>
         <div>
-          <%= "#{Decimal.mult(transaction.price, transaction.amount)} #{transaction.currency}" %>
+          <%= Transactions.get_sum(transaction, @decimals) %>
         </div>
       </div>
       <%= live_patch "", to: Routes.transaction_index_path(@socket, :edit, transaction), class: "transactions__itemLink" %>

@@ -10,6 +10,6 @@
 <%= error_tag f, :file %>
 
 <div>
-  <%= submit "Save" %>
+  <%= submit "Import" %>
 </div>
 <% end %>

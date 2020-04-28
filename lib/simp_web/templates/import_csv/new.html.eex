@@ -1,3 +1,5 @@
-<h1>Import csv</h1>
+<h1>CSV</h1>
 
 <%= render "form.html", Map.put(assigns, :action, Routes.import_csv_path(@conn, :create)) %>
+
+<%= link "Download csv", to: Routes.import_csv_path(@conn, :download) %>

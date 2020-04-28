@@ -35,6 +35,7 @@ defmodule SimpWeb.Router do
 
     get "/import-csv", ImportCSVController, :new
     post "/import-csv/create", ImportCSVController, :create
+    get "/download-csv", ImportCSVController, :download
   end
 
   # Other scopes may use custom stacks.

@@ -11,7 +11,8 @@
     "zerokol.vscode-eex-beautify",
     "ckolkman.vscode-postgres",
     "editorconfig.editorconfig",
-    "mikestead.dotenv"
+    "mikestead.dotenv",
+    "emeraldwalk.RunOnSave"
   ],
   "settings": {
     "elixir.projectPath": ".",
@@ -23,6 +24,14 @@
     "emmet.includeLanguages": {
       "HTML (EEx)": "html"
     },
-    "vscode-eex-beautify.keepBlankLines": 1
+    "vscode-eex-beautify.keepBlankLines": 1,
+    "emeraldwalk.runonsave": {
+      "commands": [
+        {
+          "isAsync": true,
+          "cmd": "mix format mix.exs \"lib/**/*.{ex,exs}\" \"test/**/*.{ex,exs}\""
+        },
+      ]
+    }
   }
 }

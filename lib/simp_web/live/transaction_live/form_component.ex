@@ -10,7 +10,36 @@ defmodule SimpWeb.TransactionLive.FormComponent do
     {:ok,
      socket
      |> assign(assigns)
-     |> assign(:changeset, changeset)}
+     |> assign(:changeset, changeset)
+     |> set_data()}
+  end
+
+  defp set_data(
+         %{
+           assigns: %{
+             current_user: current_user,
+             changeset: changeset
+           }
+         } = socket
+       ) do
+    socket =
+      assign(socket,
+        categories:
+          Transactions.list_categories(
+            current_user,
+            Ecto.Changeset.get_field(changeset, :is_expense)
+          )
+      )
+
+    socket =
+      assign(socket,
+        names:
+          Transactions.list_names(current_user, Ecto.Changeset.get_field(changeset, :category))
+      )
+
+    assign(socket,
+      currencies: Transactions.list_currencies(current_user)
+    )
   end
 
   @impl true
@@ -20,7 +49,9 @@ defmodule SimpWeb.TransactionLive.FormComponent do
       |> Transactions.change_transaction(transaction_params)
       |> Map.put(:action, :validate)
 
-    {:noreply, assign(socket, :changeset, changeset)}
+    socket = assign(socket, changeset: changeset)
+
+    {:noreply, socket |> set_data()}
   end
 
   def handle_event("save", %{"transaction" => transaction_params}, socket) do

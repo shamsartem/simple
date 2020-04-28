@@ -56,7 +56,9 @@ defmodule SimpWeb.ImportCSVControllerTest do
     setup [:create_import_csv]
 
     test "redirects when data is valid", %{conn: conn, import_csv: import_csv} do
-      conn = put(conn, Routes.import_csv_path(conn, :update, import_csv), import_csv: @update_attrs)
+      conn =
+        put(conn, Routes.import_csv_path(conn, :update, import_csv), import_csv: @update_attrs)
+
       assert redirected_to(conn) == Routes.import_csv_path(conn, :show, import_csv)
 
       conn = get(conn, Routes.import_csv_path(conn, :show, import_csv))
@@ -64,7 +66,9 @@ defmodule SimpWeb.ImportCSVControllerTest do
     end
 
     test "renders errors when data is invalid", %{conn: conn, import_csv: import_csv} do
-      conn = put(conn, Routes.import_csv_path(conn, :update, import_csv), import_csv: @invalid_attrs)
+      conn =
+        put(conn, Routes.import_csv_path(conn, :update, import_csv), import_csv: @invalid_attrs)
+
       assert html_response(conn, 200) =~ "Edit Import csv"
     end
   end
@@ -75,6 +79,7 @@ defmodule SimpWeb.ImportCSVControllerTest do
     test "deletes chosen import_csv", %{conn: conn, import_csv: import_csv} do
       conn = delete(conn, Routes.import_csv_path(conn, :delete, import_csv))
       assert redirected_to(conn) == Routes.import_csv_path(conn, :index)
+
       assert_error_sent 404, fn ->
         get(conn, Routes.import_csv_path(conn, :show, import_csv))
       end

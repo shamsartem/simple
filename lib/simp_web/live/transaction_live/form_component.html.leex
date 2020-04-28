@@ -1,5 +1,3 @@
-<h2><%= @title %></h2>
-
 <%= f = form_for @changeset, "#",
   id: "transaction-form",
   phx_target: @myself,
@@ -30,7 +28,8 @@
       <% end %>
     </datalist>
     <%= error_tag f, :category %>
-
+  </div>
+  <div class="input">
     <%= label f, :name %>
     <%= text_input f, :name, list: "name_datalist", autocomplete: "off" %>
     <datalist id="name_datalist">
@@ -43,41 +42,39 @@
 
     <div class="input">
       <%= label f, :description %>
-      <%= text_input f, :description, list: "description_datalist", autocomplete: "off" %>
-      <datalist id="description_datalist">
-        <%= for description <- @descriptions do %>
-          <option value="<%= description %>">
+      <%= text_input f, :description %>
+      <%= error_tag f, :description %>
+    </div>
+
+    <div class="input">
+      <%= label f, :price %>
+      <%= number_input f, :price, step: "any" %>
+      <%= error_tag f, :price %>
+    </div>
+
+    <div class="input">
+      <%= label f, :amount %>
+      <%= number_input f, :amount, step: "any" %>
+      <%= error_tag f, :amount %>
+    </div>
+
+    <div class="input">
+      <%= label f, :currency %>
+      <%= text_input f, :currency, list: "currency_datalist", autocomplete: "off" %>
+      <datalist id="currency_datalist">
+        <%= for currency <- @currencies do %>
+          <option value="<%= currency %>">
           <% end %>
         </datalist>
-        <%= error_tag f, :description %>
+        <%= error_tag f, :currency %>
       </div>
-
-      <div class="input">
-        <%= label f, :price %>
-        <%= number_input f, :price, step: "any" %>
-        <%= error_tag f, :price %>
+      <div>
+        <%= Transactions.get_sum(Ecto.Changeset.apply_changes(@changeset), %{"BYN" => 2}) %>
       </div>
-
-      <div class="input">
-        <%= label f, :amount %>
-        <%= number_input f, :amount, step: "any" %>
-        <%= error_tag f, :amount %>
+      <div class="transaction__buttonsContainer">
+        <%= submit "Save", phx_disable_with: "Saving..." %>
+        <%= if @changeset.data.id do %>
+          <%= link "Delete", to: "/", phx_click: "delete", phx_value_id: @changeset.data.id, data: [confirm: "Are you sure?"] %>
+        <% end %>
       </div>
-
-      <div class="input">
-        <%= label f, :currency %>
-        <%= text_input f, :currency, list: "currency_datalist", autocomplete: "off" %>
-        <datalist id="currency_datalist">
-          <%= for currency <- @currencies do %>
-            <option value="<%= currency %>">
-            <% end %>
-          </datalist>
-          <%= error_tag f, :currency %>
-        </div>
-        <div class="transaction__buttonsContainer">
-          <%= submit "Save", phx_disable_with: "Saving..." %>
-          <%= if @changeset.data.id do %>
-            <%= link "Delete", to: "/", phx_click: "delete", phx_value_id: @changeset.data.id, data: [confirm: "Are you sure?"] %>
-          <% end %>
-        </div>
-      </form>
+    </form>

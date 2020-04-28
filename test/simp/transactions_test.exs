@@ -6,9 +6,36 @@ defmodule Simp.TransactionsTest do
   describe "transactions" do
     alias Simp.Transactions.Transaction
 
-    @valid_attrs %{amount: "120.5", category: "some category", currency: "some currency", date: ~D[2010-04-17], description: "some description", is_expense: true, name: "some name", price: "120.5"}
-    @update_attrs %{amount: "456.7", category: "some updated category", currency: "some updated currency", date: ~D[2011-05-18], description: "some updated description", is_expense: false, name: "some updated name", price: "456.7"}
-    @invalid_attrs %{amount: nil, category: nil, currency: nil, date: nil, description: nil, is_expense: nil, name: nil, price: nil}
+    @valid_attrs %{
+      amount: "120.5",
+      category: "some category",
+      currency: "some currency",
+      date: ~D[2010-04-17],
+      description: "some description",
+      is_expense: true,
+      name: "some name",
+      price: "120.5"
+    }
+    @update_attrs %{
+      amount: "456.7",
+      category: "some updated category",
+      currency: "some updated currency",
+      date: ~D[2011-05-18],
+      description: "some updated description",
+      is_expense: false,
+      name: "some updated name",
+      price: "456.7"
+    }
+    @invalid_attrs %{
+      amount: nil,
+      category: nil,
+      currency: nil,
+      date: nil,
+      description: nil,
+      is_expense: nil,
+      name: nil,
+      price: nil
+    }
 
     def transaction_fixture(attrs \\ %{}) do
       {:ok, transaction} =
@@ -47,7 +74,10 @@ defmodule Simp.TransactionsTest do
 
     test "update_transaction/2 with valid data updates the transaction" do
       transaction = transaction_fixture()
-      assert {:ok, %Transaction{} = transaction} = Transactions.update_transaction(transaction, @update_attrs)
+
+      assert {:ok, %Transaction{} = transaction} =
+               Transactions.update_transaction(transaction, @update_attrs)
+
       assert transaction.amount == Decimal.new("456.7")
       assert transaction.category == "some updated category"
       assert transaction.currency == "some updated currency"
@@ -60,7 +90,10 @@ defmodule Simp.TransactionsTest do
 
     test "update_transaction/2 with invalid data returns error changeset" do
       transaction = transaction_fixture()
-      assert {:error, %Ecto.Changeset{}} = Transactions.update_transaction(transaction, @invalid_attrs)
+
+      assert {:error, %Ecto.Changeset{}} =
+               Transactions.update_transaction(transaction, @invalid_attrs)
+
       assert transaction == Transactions.get_transaction!(transaction.id)
     end
 

@@ -38,7 +38,10 @@ defmodule Simp.Transactions.Transaction do
       :amount,
       :currency
     ])
-    |> check_constraint(:price, name: :price_must_be_positive)
-    |> check_constraint(:amount, name: :amount_must_be_positive)
+    |> validate_length(:category, max: 255)
+    |> validate_length(:name, max: 255)
+    |> validate_length(:description, max: 255)
+    |> validate_number(:price, greater_than: 0)
+    |> validate_number(:amount, greater_than: 0)
   end
 end

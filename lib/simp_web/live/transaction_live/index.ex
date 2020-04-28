@@ -25,13 +25,39 @@ defmodule SimpWeb.TransactionLive.Index do
         _ -> %Transaction{date: Date.utc_today()}
       end
 
+    transactions = Transactions.list_transactions(socket.assigns.current_user)
+
+    decimals =
+      Enum.reduce(transactions, %{}, fn transaction, acc ->
+        number_of_decimals =
+          transaction.price
+          |> Decimal.to_string()
+          |> String.split(".")
+          |> Enum.at(1)
+          |> (fn str ->
+                if str do
+                  String.length(str)
+                else
+                  0
+                end
+              end).()
+
+        if Map.has_key?(acc, transaction.currency) do
+          if acc[transaction.currency] < number_of_decimals do
+            IO.inspect("#{transaction.price} #{transaction.category} #{transaction.name}")
+            Map.put(acc, transaction.currency, number_of_decimals)
+          else
+            acc
+          end
+        else
+          Map.put(acc, transaction.currency, number_of_decimals)
+        end
+      end)
+
     socket
     |> assign(
-      transactions: Transactions.list_transactions(socket.assigns.current_user),
-      categories: Transactions.list_categories(socket.assigns.current_user),
-      currencies: Transactions.list_currencies(socket.assigns.current_user),
-      names: Transactions.list_names(socket.assigns.current_user),
-      descriptions: Transactions.list_descriptions(socket.assigns.current_user),
+      transactions: transactions,
+      decimals: decimals,
       previous_transaction: %Transaction{
         date: previous_transaction.date,
         category: previous_transaction.category,
@@ -55,7 +81,6 @@ defmodule SimpWeb.TransactionLive.Index do
 
   defp apply_action(socket, :edit, %{"id" => id}) do
     socket
-    |> assign(:page_title, "Edit Transaction")
     |> assign(:transaction, Transactions.get_transaction!(id))
   end
 
@@ -65,13 +90,11 @@ defmodule SimpWeb.TransactionLive.Index do
          _params
        ) do
     socket
-    |> assign(:page_title, "New Transaction")
     |> assign(:transaction, previous_transaction)
   end
 
   defp apply_action(socket, :index, _params) do
     socket
-    |> assign(:page_title, "Listing Transactions")
     |> assign(:transaction, nil)
   end
 
