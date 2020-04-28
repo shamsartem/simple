@@ -3,6 +3,14 @@
   flex-direction: column;
 }
 
+.input input {
+  background-color: white;
+}
+
+.input input._new {
+  background-color: palegreen;
+}
+
 .linearInput {
   display: flex;
 }

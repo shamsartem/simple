@@ -4,12 +4,13 @@
     action: @live_action,
     transaction: @transaction,
     current_user: @current_user,
+    decimals: @decimals,
     return_to: Routes.transaction_index_path(@socket, :index) %>
 <% end %>
 
 <ul class="transactions__list">
   <%= for transaction <- @transactions_to_show do %>
-    <li class="transactions__item" style="<%= if transaction.is_expense do "" else "background-color: whitesmoke" end %>">
+    <li class="transactions__item <%= if transaction.is_expense do "" else "_isIncome" end %>">
       <div class="transactions__itemSection">
         <div>
           <%= transaction.date %>

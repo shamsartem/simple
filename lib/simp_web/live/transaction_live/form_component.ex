@@ -87,4 +87,12 @@ defmodule SimpWeb.TransactionLive.FormComponent do
         {:noreply, assign(socket, changeset: changeset)}
     end
   end
+
+  def is_new(list, property, changeset) do
+    if Enum.member?(list, Ecto.Changeset.get_field(changeset, property)) do
+      ""
+    else
+      "_new"
+    end
+  end
 end

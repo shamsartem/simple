@@ -16,6 +16,10 @@
   position: relative;
 }
 
+.transactions__item._isIncome {
+  background-color: gainsboro;
+}
+
 .transactions__itemSection {
   display: flex;
   justify-content: space-between;

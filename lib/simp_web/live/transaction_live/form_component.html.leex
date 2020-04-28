@@ -21,7 +21,7 @@
 
 <div class="input">
   <%= label f, :category  %>
-  <%= text_input f, :category, list: "category_datalist", autocomplete: "off" %>
+  <%= text_input f, :category, list: "category_datalist", autocomplete: "off", class: is_new(@categories, :category, @changeset) %>
   <datalist id="category_datalist">
     <%= for category <- @categories do %>
       <option value="<%= category %>">
@@ -31,7 +31,7 @@
   </div>
   <div class="input">
     <%= label f, :name %>
-    <%= text_input f, :name, list: "name_datalist", autocomplete: "off" %>
+    <%= text_input f, :name, list: "name_datalist", autocomplete: "off", class: is_new(@names, :name, @changeset) %>
     <datalist id="name_datalist">
       <%= for name <- @names do %>
         <option value="<%= name %>">
@@ -60,7 +60,7 @@
 
     <div class="input">
       <%= label f, :currency %>
-      <%= text_input f, :currency, list: "currency_datalist", autocomplete: "off" %>
+      <%= text_input f, :currency, list: "currency_datalist", autocomplete: "off", class: is_new(@currencies, :currency, @changeset) %>
       <datalist id="currency_datalist">
         <%= for currency <- @currencies do %>
           <option value="<%= currency %>">
@@ -69,7 +69,7 @@
         <%= error_tag f, :currency %>
       </div>
       <div>
-        <%= Transactions.get_sum(Ecto.Changeset.apply_changes(@changeset), %{"BYN" => 2}) %>
+        <%= Transactions.get_sum(Ecto.Changeset.apply_changes(@changeset), @decimals) %>
       </div>
       <div class="transaction__buttonsContainer">
         <%= submit "Save", phx_disable_with: "Saving..." %>
