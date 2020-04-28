@@ -52,14 +52,18 @@ defmodule Simp.Transactions do
   end
 
   def list_names(%User{} = current_user, category) do
-    Repo.all(
-      from t in Transaction,
-        select: t.name,
-        group_by: t.name,
-        where: t.user_id == ^current_user.id,
-        where: t.category == ^category,
-        order_by: [desc: count(t.name)]
-    )
+    if category do
+      Repo.all(
+        from t in Transaction,
+          select: t.name,
+          group_by: t.name,
+          where: t.user_id == ^current_user.id,
+          where: t.category == ^category,
+          order_by: [desc: count(t.name)]
+      )
+    else
+      []
+    end
   end
 
   def list_currencies(%User{} = current_user) do
