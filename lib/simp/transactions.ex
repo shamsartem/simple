@@ -29,7 +29,7 @@ defmodule Simp.Transactions do
   end
 
   def list_transactions(%User{} = current_user, current_page) do
-    per_page = 7
+    per_page = 6
 
     Repo.all(
       from t in Transaction,

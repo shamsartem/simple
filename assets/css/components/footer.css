@@ -9,4 +9,9 @@
   max-width: var(--max-page-width);
   padding: var(--space-md);
   justify-content: space-between;
+  align-items: center;
+}
+
+.footer__container > span {
+  width: 50px;
 }

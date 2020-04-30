@@ -35,13 +35,12 @@
   <div class="footer__container">
     <span>
       <%= if @page > 1 do %>
-        <%= live_patch "prev", to: Routes.transaction_index_path(@socket, :index, page: @page - 1), class: "button" %>
+        <%= live_patch "<", to: Routes.transaction_index_path(@socket, :index, page: @page - 1), class: "button" %>
       <% end %>
     </span>
+    <%= live_patch "+", to: Routes.transaction_index_path(@socket, :new), class: "transactions__add" %>
     <span>
-      <%= live_patch "next", to: Routes.transaction_index_path(@socket, :index, page: @page + 1), class: "button" %>
+      <%= live_patch ">", to: Routes.transaction_index_path(@socket, :index, page: @page + 1), class: "button" %>
     </span>
   </div>
 </footer>
-
-<%= live_patch "+", to: Routes.transaction_index_path(@socket, :new), class: "transactions__add" %>
