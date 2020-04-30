@@ -35,7 +35,7 @@ defmodule Simp.Transactions do
       from t in Transaction,
         where: t.user_id == ^current_user.id,
         offset: ^((current_page - 1) * per_page),
-        order_by: [desc: t.date],
+        order_by: [desc: t.date, desc: t.inserted_at],
         limit: ^per_page
     )
   end

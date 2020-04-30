@@ -17,18 +17,3 @@
   gap: 5px;
 }
 
-.transaction__buttonsContainer > * {
-  padding: 10px;
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  background-color: var(--c-gray-9);
-  border-radius: var(--bdrs-default);
-  transition: background-color var(--t);
-}
-
-.transaction__buttonsContainer > *:hover,
-.transaction__buttonsContainer > *&:focus {
-  background-color: var(--c-gray-7);
-}
-

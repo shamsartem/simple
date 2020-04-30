@@ -72,9 +72,9 @@
         <%= Transactions.get_sum(Ecto.Changeset.apply_changes(@changeset), @decimals) %>
       </div>
       <div class="transaction__buttonsContainer">
-        <%= submit "Save", phx_disable_with: "Saving..." %>
+        <%= submit "Save", phx_disable_with: "Saving...", class: "button" %>
         <%= if @changeset.data.id do %>
-          <%= link "Delete", to: "/", phx_click: "delete", phx_value_id: @changeset.data.id, data: [confirm: "Are you sure?"] %>
+          <%= link "Delete", to: "/", phx_click: "delete", phx_value_id: @changeset.data.id, data: [confirm: "Are you sure?"], class: "button" %>
         <% end %>
       </div>
     </form>

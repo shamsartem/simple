@@ -105,3 +105,18 @@
 .alert:empty {
   display: none;
 }
+
+.button {
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  background-color: var(--c-gray-9);
+  border-radius: var(--bdrs-default);
+  transition: background-color var(--t);
+  cursor: pointer;
+}
+
+.button:hover,
+.button:focus {
+  background-color: var(--c-gray-7);
+}
