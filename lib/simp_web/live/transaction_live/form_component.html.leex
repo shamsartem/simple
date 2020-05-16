@@ -41,12 +41,6 @@
     </div>
 
     <div class="input">
-      <%= label f, :description %>
-      <%= text_input f, :description %>
-      <%= error_tag f, :description %>
-    </div>
-
-    <div class="input">
       <%= label f, :price %>
       <%= number_input f, :price, step: "any" %>
       <%= error_tag f, :price %>
@@ -56,6 +50,12 @@
       <%= label f, :amount %>
       <%= number_input f, :amount, step: "any" %>
       <%= error_tag f, :amount %>
+    </div>
+
+    <div class="input">
+      <%= label f, :description %>
+      <%= text_input f, :description %>
+      <%= error_tag f, :description %>
     </div>
 
     <div class="input">
