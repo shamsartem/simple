@@ -21,7 +21,7 @@
 
 <div class="input">
   <%= label f, :category  %>
-  <%= text_input f, :category, list: "category_datalist", autocomplete: "off", class: is_new(@categories, :category, @changeset) %>
+  <%= text_input f, :category, list: "category_datalist", autocomplete: "off", class: is_new(@categories, :category, @changeset),  phx_hook: "Autocomplete" %>
   <datalist id="category_datalist">
     <%= for category <- @categories do %>
       <option value="<%= category %>">
@@ -31,7 +31,7 @@
   </div>
   <div class="input">
     <%= label f, :name %>
-    <%= text_input f, :name, list: "name_datalist", autocomplete: "off", class: is_new(@names, :name, @changeset) %>
+    <%= text_input f, :name, list: "name_datalist", autocomplete: "off", class: is_new(@names, :name, @changeset), phx_hook: "Autocomplete" %>
     <datalist id="name_datalist">
       <%= for name <- @names do %>
         <option value="<%= name %>">
@@ -60,7 +60,7 @@
 
     <div class="input">
       <%= label f, :currency %>
-      <%= text_input f, :currency, list: "currency_datalist", autocomplete: "off", class: is_new(@currencies, :currency, @changeset) %>
+      <%= text_input f, :currency, list: "currency_datalist", autocomplete: "off", class: is_new(@currencies, :currency, @changeset), phx_hook: "Autocomplete" %>
       <datalist id="currency_datalist">
         <%= for currency <- @currencies do %>
           <option value="<%= currency %>">
