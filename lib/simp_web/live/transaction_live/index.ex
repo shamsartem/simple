@@ -59,6 +59,7 @@ defmodule SimpWeb.TransactionLive.Index do
       transactions: transactions,
       decimals: decimals,
       previous_transaction: %Transaction{
+        is_expense: previous_transaction.is_expense,
         date: previous_transaction.date,
         category: previous_transaction.category,
         currency: previous_transaction.currency,
