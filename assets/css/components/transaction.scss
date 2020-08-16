@@ -1,0 +1,21 @@
+.transaction {
+  &__form {
+    display: flex;
+    flex-direction: column;
+
+    > * {
+      margin-bottom: 5px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+  
+  &__buttonsContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+    gap: 5px;
+  }
+}
+

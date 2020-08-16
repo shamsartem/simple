@@ -1,0 +1,39 @@
+input {
+  background-color: var(--c-gray-2);
+  color: var(--c-gray-9);
+  border: 1px solid var(--c-gray-6);
+  border-radius: var(--bdrs-default);
+  height: 30px;
+  padding-left: 7px;
+  outline: none;
+
+  &:focus {
+    border-color: var(--c-gray-9);
+  }
+
+  &._new {
+    background-color: var(--c-warning-dark);
+  }
+}
+
+.input {
+  display: flex;
+  flex-direction: column;
+}
+
+.linearInput {
+  display: flex;
+  align-items: center;
+
+  select {
+    background-color: var(--c-gray-2);
+    color: var(--c-gray-9);
+    border-radius: var(--bdrs-default);
+    height: 30px;
+    outline: none;
+
+    &:focus {
+      border-color: var(--c-gray-9);
+    }
+  }
+}

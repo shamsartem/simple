@@ -10,6 +10,8 @@ html {
   font-family: var(--ff-default);
   font-size: var(--fz-md);
   line-height: var(--lh-md);
+  color: var(--c-gray-9);
+  background-color: var(--c-gray-1);
 }
 
 body {
@@ -18,7 +20,6 @@ body {
   flex-grow: 1;
   width: 100%;
   min-width: 320px;
-  color: var(--c-gray-1);
 }
 
 .visuallyHidden {
@@ -37,6 +38,11 @@ body {
 main > form > div > button {
   margin-top: 30px;
   padding: 10px;
-  background-color: grey;
-  border-radius: 6px;
+  background-color: var(--c-gray-3);
+  transition: background-color var(--t);
+  border-radius: var(--bdrs-default);
+
+  &:hover {
+    background-color: var(--c-gray-2);
+  }
 }

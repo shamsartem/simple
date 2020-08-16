@@ -1,17 +1,21 @@
 /* This file is for your main application css. */
-@import "./normalize.css";
-@import "./reset.css";
-@import "./variables.css";
-@import "./global.css";
+@import "./normalize.scss";
+@import "./reset.scss";
+@import "./variables.scss";
+@import "./global.scss";
 
 @import "../node_modules/nprogress/nprogress.css";
 
-@import "./components/components.css";
+@import "./components/components.scss";
 
 /* LiveView specific classes for your customizations */
 .invalid-feedback {
-  color: #a94443;
+  color: var(--c-danger);
   display: block;
+}
+
+.help-block {
+  color: var(--c-danger);
 }
 
 .phx-no-feedback.invalid-feedback, .phx-no-feedback .invalid-feedback {
@@ -30,93 +34,3 @@
   pointer-events: none;
 }
 
-.phx-modal {
-  opacity: 1!important;
-  position: fixed;
-  z-index: 2;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgb(0,0,0);
-  background-color: rgba(0,0,0,0.4);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.phx-modal-content {
-  background-color: #fefefe;
-  max-height: 100%;
-  overflow-y: auto;
-  padding: 15px;
-  width: 100%;
-  max-width: var(--max-page-width);
-  display: flex;
-  flex-direction: column;
-  position: relative;
-}
-
-.phx-modal-close {
-  color: #aaa;
-  position: absolute;
-  font-size: 25px;
-  width: 40px;
-  height: 40px;
-  font-weight: bold;
-  right: 0;
-  top: 0;
-  text-align: center;
-}
-
-.phx-modal-close:hover,
-.phx-modal-close:focus {
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-
-/* Alerts and form errors */
-.alert {
-  width: 100%;
-  max-width: var(--max-page-width);
-  padding: var(--space-md);
-  margin: 0 auto;
-}
-.alert-info {
-  color: #31708f;
-  background-color: #d9edf7;
-  border-color: #bce8f1;
-}
-.alert-warning {
-  color: #8a6d3b;
-  background-color: #fcf8e3;
-  border-color: #faebcc;
-}
-.alert-danger {
-  color: #a94442;
-  background-color: #f2dede;
-  border-color: #ebccd1;
-}
-.alert p {
-  margin-bottom: 0;
-}
-.alert:empty {
-  display: none;
-}
-
-.button {
-  padding: 10px;
-  display: flex;
-  justify-content: center;
-  background-color: var(--c-gray-9);
-  border-radius: var(--bdrs-default);
-  transition: background-color var(--t);
-  cursor: pointer;
-}
-
-.button:hover,
-.button:focus {
-  background-color: var(--c-gray-7);
-}

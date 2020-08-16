@@ -33,14 +33,14 @@
 </ul>
 <footer class="footer">
   <div class="footer__container">
-    <span>
+    <div class="footer__nav-button">
       <%= if @page > 1 do %>
         <%= live_patch "<", to: Routes.transaction_index_path(@socket, :index, page: @page - 1), class: "button" %>
       <% end %>
-    </span>
-    <%= live_patch "+", to: Routes.transaction_index_path(@socket, :new), class: "transactions__add" %>
-    <span>
+    </div>
+    <%= live_patch "+", to: Routes.transaction_index_path(@socket, :new), class: "footer__add" %>
+    <div class="footer__nav-button">
       <%= live_patch ">", to: Routes.transaction_index_path(@socket, :index, page: @page + 1), class: "button" %>
-    </span>
+    </div>
   </div>
 </footer>
