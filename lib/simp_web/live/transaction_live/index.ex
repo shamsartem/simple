@@ -114,4 +114,36 @@ defmodule SimpWeb.TransactionLive.Index do
       {:noreply, socket}
     end
   end
+
+  def handle_event("swiped-right", _, socket) do
+    %{page: page} = socket.assigns
+
+    if page > 1 do
+      {:noreply,
+       push_patch(
+         socket,
+         to: Routes.transaction_index_path(socket, :index, page: page - 1)
+       )}
+    else
+      {:noreply, socket}
+    end
+  end
+
+  def handle_event("swiped-left", _, socket) do
+    %{page: page} = socket.assigns
+
+    {:noreply,
+     push_patch(
+       socket,
+       to: Routes.transaction_index_path(socket, :index, page: page + 1)
+     )}
+  end
+
+  def handle_event("swiped-up", _, socket) do
+    {:noreply,
+     push_patch(
+       socket,
+       to: Routes.transaction_index_path(socket, :new)
+     )}
+  end
 end
