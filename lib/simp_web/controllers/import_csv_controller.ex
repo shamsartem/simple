@@ -139,7 +139,6 @@ defmodule SimpWeb.ImportCSVController do
               rename_currency.(t, "BYN")
 
             _ ->
-              IO.inspect(t)
               t
           end
 

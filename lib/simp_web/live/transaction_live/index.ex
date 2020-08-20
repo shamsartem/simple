@@ -7,9 +7,13 @@ defmodule SimpWeb.TransactionLive.Index do
   @impl true
   def mount(_params, %{"simp_auth" => token}, socket) do
     current_user = SimpWeb.Live.AuthHelper.get_credentials(socket, token)
-    socket = assign(socket, current_user: current_user)
 
-    {:ok, set_transactions(socket)}
+    if current_user == nil do
+      {:ok, redirect(socket, to: "/")}
+    else
+      socket = assign(socket, current_user: current_user)
+      {:ok, set_transactions(socket)}
+    end
   end
 
   defp fetch(socket) do
@@ -44,7 +48,6 @@ defmodule SimpWeb.TransactionLive.Index do
 
         if Map.has_key?(acc, transaction.currency) do
           if acc[transaction.currency] < number_of_decimals do
-            IO.inspect("#{transaction.price} #{transaction.category} #{transaction.name}")
             Map.put(acc, transaction.currency, number_of_decimals)
           else
             acc
@@ -72,7 +75,7 @@ defmodule SimpWeb.TransactionLive.Index do
 
   def handle_params(%{"page" => page}, _url, socket) do
     {page, ""} = Integer.parse(page || "1")
-    {:noreply, socket |> assign(page: page) |> fetch()}
+    {:noreply, assign(socket, page: page) |> fetch}
   end
 
   @impl true
