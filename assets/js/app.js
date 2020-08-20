@@ -16,6 +16,7 @@ import "phoenix_html"
 import { Socket } from "phoenix"
 import NProgress from "nprogress"
 import { LiveSocket } from "phoenix_live_view"
+import focusTrap from "focus-trap"
 
 let Hooks = {}
 Hooks.Autocomplete = {
@@ -33,6 +34,15 @@ Hooks.Autocomplete = {
         });
       }
     })
+  }
+}
+Hooks.FocusTrap = {
+  mounted() {
+    this.focusTrap = focusTrap(this.el)
+    this.focusTrap.activate()
+  },
+  beforeDestroy() {
+    this.focusTrap.deactivate()
   }
 }
 
