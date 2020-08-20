@@ -21,9 +21,24 @@ input {
   flex-direction: column;
 }
 
-.linearInput {
+.checkboxInput {
   display: flex;
   align-items: center;
+  align-self: flex-start;
+
+  input {
+    margin-left: 10px;
+  }
+
+  &:focus-within {
+    outline: 1px solid white;
+  }
+}
+
+.selectInput {
+  display: flex;
+  align-items: center;
+  align-self: flex-start;
 
   select {
     background-color: var(--c-gray-2);
@@ -31,7 +46,13 @@ input {
     border-radius: var(--bdrs-default);
     height: 30px;
     outline: none;
-
+    margin: 0 7px;
+    &:first-child {
+      margin-left: 0;
+    }
+    &:last-child {
+      margin-right: 0;
+    }
     &:focus {
       border-color: var(--c-gray-9);
     }

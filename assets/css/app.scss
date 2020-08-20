@@ -9,6 +9,12 @@
 @import "./components/components.scss";
 
 /* LiveView specific classes for your customizations */
+[data-phx-main="true"] {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
 .invalid-feedback {
   color: var(--c-danger);
   display: block;

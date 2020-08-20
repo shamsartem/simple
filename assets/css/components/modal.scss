@@ -35,8 +35,7 @@
     top: 0;
     text-align: center;
 
-    &:hover,
-    &:focus {
+    &:hover {
       color: var(--c-gray-5);
       text-decoration: none;
       cursor: pointer;

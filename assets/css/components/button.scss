@@ -6,10 +6,8 @@
   border-radius: var(--bdrs-default);
   transition: background-color var(--t);
   cursor: pointer;
-  outline: none;
 
-  &:hover,
-  &:focus {
+  &:hover {
     background-color: var(--c-gray-2);
   }
 }
