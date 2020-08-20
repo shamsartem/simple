@@ -8,7 +8,6 @@
   "extensions": [
     "jakebecker.elixir-ls",
     "florinpatrascu.vscode-elixir-snippets",
-    "zerokol.vscode-eex-beautify",
     "ckolkman.vscode-postgres",
     "editorconfig.editorconfig",
     "mikestead.dotenv",
@@ -24,7 +23,6 @@
     "emmet.includeLanguages": {
       "HTML (EEx)": "html"
     },
-    "vscode-eex-beautify.keepBlankLines": 1,
     "emeraldwalk.runonsave": {
       "commands": [
         {
@@ -32,6 +30,10 @@
           "cmd": "mix format mix.exs \"lib/**/*.{ex,exs}\" \"test/**/*.{ex,exs}\""
         },
       ]
+    },
+    "files.associations": {
+      "*.eex": "eex",
+      "*.leex": "eex"
     }
   }
 }
