@@ -3,7 +3,9 @@
   justify-content: center;
 
   &__container {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
     width: 100%;
     max-width: var(--max-page-width);
     padding: var(--space-md);
@@ -11,23 +13,15 @@
     align-items: center;
   }
 
-  &__nav-button {
-    width: 50px;
-  }
-
-  &__add {
-    width: 64px;
-    height: 64px;
-    border-radius: 9999px;
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-color: var(--c-gray-1);
-    background-size: 20px 20px;
-    box-shadow: 2px 2px 8px 4px rgba(0, 0, 0, 0.31);
-    text-align: center;
-    font-size: 30px;
-    font-weight: bold;
-    padding: 6px 0;
-    border: 2px solid var(--c-gray-4);
+  .button {
+    &._prev {
+      grid-column: 1;
+    }
+    &._new {
+      grid-column: 2;
+    }
+    &._next {
+      grid-column: 3;
+    }
   }
 }
