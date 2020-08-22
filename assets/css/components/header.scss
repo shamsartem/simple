@@ -2,8 +2,12 @@
   &__nav {
     display: flex;
     justify-content: center;
-    background-color: var(--c-black);
+    background-color: var(--c-gray-1);
     border-bottom: 1px solid var(--c-gray-5);
+    position: sticky;
+    top: 0;
+    left: 0;
+    z-index: 1;
   }
 
   &__container {

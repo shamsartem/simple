@@ -35,9 +35,6 @@ const hooks = {
       this.el.addEventListener('swiped-left', () => {
         this.pushEvent('swiped-left')
       })
-      this.el.addEventListener('swiped-up', () => {
-        this.pushEvent('swiped-up')
-      })
     }
   }
 }

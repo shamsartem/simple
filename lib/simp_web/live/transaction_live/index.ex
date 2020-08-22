@@ -3,6 +3,7 @@ defmodule SimpWeb.TransactionLive.Index do
 
   alias Simp.Transactions
   alias Simp.Transactions.Transaction
+  alias Simp.Search.Search
 
   @impl true
   def mount(_params, %{"simp_auth" => token}, socket) do
@@ -16,10 +17,17 @@ defmodule SimpWeb.TransactionLive.Index do
     end
   end
 
-  defp fetch(socket) do
-    %{page: page} = socket.assigns
-    transactions = Transactions.list_transactions(socket.assigns.current_user, page)
-    assign(socket, transactions_to_show: transactions)
+  defp set_transactions_to_show(socket) do
+    %{page: page, query: query} = socket.assigns
+
+    transactions_to_show =
+      if query == "" do
+        Transactions.list_transactions(socket.assigns.current_user, page)
+      else
+        Transactions.search_transactions(socket.assigns.current_user, page, query)
+      end
+
+    assign(socket, transactions_to_show: transactions_to_show)
   end
 
   defp set_transactions(socket) do
@@ -68,14 +76,16 @@ defmodule SimpWeb.TransactionLive.Index do
         currency: previous_transaction.currency,
         amount: 1
       },
-      page: 1
+      page: 1,
+      search_changeset: Search.changeset(%Search{}, %{}),
+      query: ""
     )
-    |> fetch()
+    |> set_transactions_to_show()
   end
 
   def handle_params(%{"page" => page}, _url, socket) do
     {page, ""} = Integer.parse(page || "1")
-    {:noreply, assign(socket, page: page) |> fetch}
+    {:noreply, assign(socket, page: page) |> set_transactions_to_show}
   end
 
   @impl true
@@ -139,11 +149,11 @@ defmodule SimpWeb.TransactionLive.Index do
      )}
   end
 
-  def handle_event("swiped-up", _, socket) do
+  def handle_event("search", %{"search" => %{"query" => query}}, socket) do
     {:noreply,
-     push_patch(
-       socket,
-       to: Routes.transaction_index_path(socket, :new)
-     )}
+     socket
+     |> assign(page: 1, query: query)
+     |> set_transactions_to_show
+     |> push_patch(to: Routes.transaction_index_path(socket, :index, page: 1))}
   end
 end

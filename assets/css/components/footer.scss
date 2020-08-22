@@ -1,6 +1,12 @@
 .footer {
   display: flex;
   justify-content: center;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: var(--c-gray-1);
+  border-top: 1px solid var(--c-gray-4);
 
   &__container {
     display: grid;

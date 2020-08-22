@@ -4,8 +4,6 @@ defmodule Simp.Files.ImportCSV do
 
   schema "files" do
     field :file, :binary
-
-    timestamps()
   end
 
   @doc false

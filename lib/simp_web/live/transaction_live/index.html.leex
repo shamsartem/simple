@@ -9,6 +9,22 @@
   %>
 <% end %>
 
+<%= f = form_for @search_changeset, "#",
+  id: "search-form",
+  phx_change: "search",
+  class: "transactions__searchForm"
+%>
+  <div class="input">
+    <div class="visuallyHidden"><%= label f, :query %></div>
+    <%= text_input f, :query,
+      phx_debounce: "500",
+      type: "search",
+      autocomplete: "off",
+      placeholder: "search"
+    %>
+  </div>
+</form>
+
 <ul id="transactions" class="transactions__list" phx-hook="SwipeNavigation">
   <%= for transaction <- @transactions_to_show do %>
     <li class="transactions__item <%= if transaction.is_expense do "" else "_isIncome" end %>">

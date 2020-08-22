@@ -1,4 +1,5 @@
 defmodule Simp.Transactions do
+  @per_page 100
   @moduledoc """
   The Transactions context.
   """
@@ -29,14 +30,30 @@ defmodule Simp.Transactions do
   end
 
   def list_transactions(%User{} = current_user, current_page) do
-    per_page = 6
-
     Repo.all(
       from t in Transaction,
         where: t.user_id == ^current_user.id,
-        offset: ^((current_page - 1) * per_page),
+        offset: ^((current_page - 1) * @per_page),
         order_by: [desc: t.date, desc: t.inserted_at],
-        limit: ^per_page
+        limit: ^@per_page
+    )
+  end
+
+  def search_transactions(%User{} = current_user, current_page, query) do
+    like = "%#{query}%"
+
+    Repo.all(
+      from t in Transaction,
+        where:
+          t.user_id == ^current_user.id and
+            (ilike(t.name, ^like) or
+               ilike(t.category, ^like) or
+               ilike(type(t.date, :string), ^like) or
+               ilike(type(t.price, :string), ^like) or
+               ilike(t.currency, ^like)),
+        offset: ^((current_page - 1) * @per_page),
+        order_by: [desc: t.date, desc: t.inserted_at],
+        limit: ^@per_page
     )
   end
 
@@ -216,17 +233,19 @@ defmodule Simp.Transactions do
   end
 
   def get_sum(%Transaction{} = transaction, decimals) do
-    "#{
+    sign =
       if transaction.is_expense do
         "-"
       else
         "+"
       end
-    }#{
+
+    price =
       Decimal.round(
         Decimal.mult(transaction.price || 0, transaction.amount),
         Map.get(decimals, transaction.currency) || 0
       )
-    } #{transaction.currency}"
+
+    "#{sign}#{price} #{transaction.currency}"
   end
 end
