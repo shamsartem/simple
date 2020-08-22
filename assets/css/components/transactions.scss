@@ -42,12 +42,19 @@
   }
 
   &__searchForm {
-    padding: var(--space-md);
     border-bottom: 1px solid var(--c-gray-4);
     position: sticky;
     top: 46px;
     left: 0;
     background-color: var(--c-gray-1);
     z-index: 1;
+    display: flex;
+    justify-content: center;
+    padding: var(--space-md);
+
+    .input {
+      width: 100%;
+      max-width: calc(var(--max-page-width) - var(--space-md) * 2);
+    }
   }
 }
