@@ -18,7 +18,8 @@ defmodule SimpWeb.TransactionLive.Index do
   end
 
   defp set_transactions_to_show(socket) do
-    %{page: page, query: query} = socket.assigns
+    %{page: page, search_changeset: search_changeset} = socket.assigns
+    query = Ecto.Changeset.get_field(search_changeset, :query)
 
     transactions_to_show =
       if query == "" do
@@ -77,15 +78,20 @@ defmodule SimpWeb.TransactionLive.Index do
         amount: 1
       },
       page: 1,
-      search_changeset: Search.changeset(%Search{}, %{}),
-      query: ""
+      search_changeset: Search.changeset(%Search{}, %{})
     )
     |> set_transactions_to_show()
   end
 
   def handle_params(%{"page" => page}, _url, socket) do
     {page, ""} = Integer.parse(page || "1")
-    {:noreply, assign(socket, page: page) |> set_transactions_to_show}
+
+    socket =
+      socket
+      |> assign(page: page)
+      |> set_transactions_to_show
+
+    {:noreply, socket}
   end
 
   @impl true
@@ -149,10 +155,13 @@ defmodule SimpWeb.TransactionLive.Index do
      )}
   end
 
-  def handle_event("search", %{"search" => %{"query" => query}}, socket) do
+  def handle_event("search", %{"search" => search_params}, socket) do
     {:noreply,
      socket
-     |> assign(page: 1, query: query)
+     |> assign(
+       page: 1,
+       search_changeset: Search.changeset(%Search{}, search_params)
+     )
      |> set_transactions_to_show
      |> push_patch(to: Routes.transaction_index_path(socket, :index, page: 1))}
   end

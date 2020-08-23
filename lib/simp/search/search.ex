@@ -10,6 +10,5 @@ defmodule Simp.Search.Search do
   def changeset(search, attrs) do
     search
     |> cast(attrs, [:query])
-    |> validate_required([:query])
   end
 end
