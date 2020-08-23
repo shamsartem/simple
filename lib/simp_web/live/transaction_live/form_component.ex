@@ -22,22 +22,21 @@ defmodule SimpWeb.TransactionLive.FormComponent do
            }
          } = socket
        ) do
-    socket =
-      assign(socket,
-        categories:
-          Transactions.list_categories(
-            current_user,
-            Ecto.Changeset.get_field(changeset, :is_expense)
-          )
+    categories =
+      Transactions.list_categories(
+        current_user,
+        Ecto.Changeset.get_field(changeset, :is_expense)
       )
 
-    socket =
-      assign(socket,
-        names:
-          Transactions.list_names(current_user, Ecto.Changeset.get_field(changeset, :category))
+    names =
+      Transactions.list_names(
+        current_user,
+        Ecto.Changeset.get_field(changeset, :category)
       )
 
     assign(socket,
+      categories: categories,
+      names: names,
       currencies: Transactions.list_currencies(current_user)
     )
   end
@@ -49,23 +48,33 @@ defmodule SimpWeb.TransactionLive.FormComponent do
       |> Transactions.change_transaction(transaction_params)
       |> Map.put(:action, :validate)
 
-    socket = assign(socket, changeset: changeset)
+    socket =
+      socket
+      |> assign(changeset: changeset)
+      |> set_data()
 
-    {:noreply, socket |> set_data()}
+    {:noreply, socket}
   end
 
-  def handle_event("save", %{"transaction" => transaction_params}, socket) do
-    save_transaction(socket, socket.assigns.action, transaction_params)
-  end
-
-  defp save_transaction(socket, :edit, transaction_params) do
-    if socket.assigns.current_user.id == socket.assigns.transaction.user_id do
-      case Transactions.update_transaction(socket.assigns.transaction, transaction_params) do
+  def handle_event(
+        "save",
+        %{"transaction" => transaction_params},
+        %{
+          assigns: %{
+            action: :edit,
+            current_user: current_user,
+            transaction: transaction,
+            return_to: return_to
+          }
+        } = socket
+      ) do
+    if current_user.id == transaction.user_id do
+      case Transactions.update_transaction(transaction, transaction_params) do
         {:ok, _transaction} ->
           {:noreply,
            socket
            |> put_flash(:info, "Transaction updated successfully")
-           |> push_redirect(to: socket.assigns.return_to)}
+           |> push_redirect(to: return_to)}
 
         {:error, %Ecto.Changeset{} = changeset} ->
           {:noreply, assign(socket, :changeset, changeset)}
@@ -75,13 +84,23 @@ defmodule SimpWeb.TransactionLive.FormComponent do
     end
   end
 
-  defp save_transaction(socket, :new, transaction_params) do
-    case Transactions.create_transaction(transaction_params, socket.assigns.current_user) do
+  def handle_event(
+        "save",
+        %{"transaction" => transaction_params},
+        %{
+          assigns: %{
+            action: :new,
+            current_user: current_user,
+            return_to: return_to
+          }
+        } = socket
+      ) do
+    case Transactions.create_transaction(transaction_params, current_user) do
       {:ok, _transaction} ->
         {:noreply,
          socket
          |> put_flash(:info, "Transaction created successfully")
-         |> push_redirect(to: socket.assigns.return_to)}
+         |> push_redirect(to: return_to)}
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, changeset: changeset)}
