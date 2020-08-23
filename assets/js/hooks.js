@@ -35,6 +35,9 @@ const hooks = {
       this.el.addEventListener('swiped-left', () => {
         this.pushEvent('swiped-left')
       })
+    },
+    updated() {
+      window.scrollTo(0, 0)
     }
   }
 }
