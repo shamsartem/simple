@@ -11,6 +11,7 @@ defmodule SimpWeb.TransactionLive.FormComponent do
      socket
      |> assign(assigns)
      |> assign(:changeset, changeset)
+     |> assign(:previous_is_expense, Ecto.Changeset.get_field(changeset, :is_expense))
      |> set_data()}
   end
 
@@ -18,15 +19,25 @@ defmodule SimpWeb.TransactionLive.FormComponent do
          %{
            assigns: %{
              current_user: current_user,
-             changeset: changeset
+             changeset: changeset,
+             previous_is_expense: previous_is_expense
            }
          } = socket
        ) do
+    is_expense = Ecto.Changeset.get_field(changeset, :is_expense)
+
     categories =
       Transactions.list_categories(
         current_user,
-        Ecto.Changeset.get_field(changeset, :is_expense)
+        is_expense
       )
+
+    changeset =
+      if previous_is_expense == is_expense do
+        changeset
+      else
+        Ecto.Changeset.change(changeset, category: List.first(categories) || "")
+      end
 
     names =
       Transactions.list_names(
@@ -37,7 +48,9 @@ defmodule SimpWeb.TransactionLive.FormComponent do
     assign(socket,
       categories: categories,
       names: names,
-      currencies: Transactions.list_currencies(current_user)
+      currencies: Transactions.list_currencies(current_user),
+      changeset: changeset,
+      previous_is_expense: is_expense
     )
   end
 
@@ -197,16 +210,25 @@ defmodule SimpWeb.TransactionLive.FormComponent do
 
       true ->
         if num === "" do
-          res
+          ""
         else
-          res +
-            if sign === "+" do
-              {parsed, _} = Float.parse(num)
-              parsed
-            else
-              {parsed, _} = Float.parse(num)
-              -parsed
-            end
+          res =
+            res +
+              if sign === "+" do
+                {parsed, _} = Float.parse(num)
+                parsed
+              else
+                {parsed, _} = Float.parse(num)
+                -parsed
+              end
+
+          [integer_part, decimal_part] = String.split(Float.to_string(res), ".")
+
+          if decimal_part == "0" do
+            String.to_integer(integer_part)
+          else
+            res
+          end
         end
     end
   end

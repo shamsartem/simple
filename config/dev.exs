@@ -2,8 +2,8 @@ use Mix.Config
 
 # Configure your database
 config :simp, Simp.Repo,
-  username: "postgres",
-  password: "postgres",
+  username: "postgres_user",
+  password: "postgres_password",
   database: "database",
   hostname: "db",
   show_sensitive_data_on_connection_error: true,
