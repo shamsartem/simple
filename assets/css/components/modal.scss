@@ -1,5 +1,5 @@
 .modal {
-  opacity: 1!important;
+  opacity: 1 !important;
   position: fixed;
   z-index: 2;
   left: 0;
@@ -15,7 +15,7 @@
     background-color: var(--c-gray-1);
     max-height: 100%;
     overflow-y: auto;
-    padding: 15px;
+    padding: 14px;
     width: 100%;
     max-width: var(--max-page-width);
     display: flex;
