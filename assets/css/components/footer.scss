@@ -11,7 +11,7 @@
   &__container {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 9px;
+    gap: 10px;
     width: 100%;
     max-width: var(--max-page-width);
     padding: var(--space-md);
